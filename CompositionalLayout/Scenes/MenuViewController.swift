@@ -38,6 +38,15 @@ final class MenuViewController: BaseViewController<MenuViewModel> {
         return button
     }()
     
+    private lazy var mixedLayoutsButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("List + Grid + Column", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(mixedLayoutsPressed), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +67,7 @@ final class MenuViewController: BaseViewController<MenuViewModel> {
         stackView.addArrangedSubview(singleSectionListButton)
         stackView.addArrangedSubview(singleSectionGridButton)
         stackView.addArrangedSubview(singleSectionColumnButton)
+        stackView.addArrangedSubview(mixedLayoutsButton)
     }
     
     override func setupConstraints() {
@@ -90,5 +100,15 @@ extension MenuViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    @objc
+    private func mixedLayoutsPressed() {
+        let viewModel = ListGridColumnViewModel(
+            list: [1,2,3,4,5,6,7,8,9,10],
+            grid: [11,12,13,14,15,16,17,18,19,20],
+            column: [21,22,23,24,25,26,27,28,29,30]
+        )
+        let viewController = ListGridColumnViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
-

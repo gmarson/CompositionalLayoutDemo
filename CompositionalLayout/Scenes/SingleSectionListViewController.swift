@@ -12,7 +12,7 @@ final class SingleSectionListViewController: BaseViewController<SingleSectionVie
     private var dataSource: NumberDataSource?
     private var currentSnapshot: NumberSnapshot = NumberSnapshot()
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().basicListLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(NumberCell.self, forCellWithReuseIdentifier: NumberCell.identifier)
         return collectionView

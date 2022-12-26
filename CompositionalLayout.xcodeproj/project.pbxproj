@@ -11,6 +11,8 @@
 		1D90CCE6295A1824002C0A91 /* SingleSectionColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90CCE5295A1824002C0A91 /* SingleSectionColumnViewController.swift */; };
 		1D90CCEA295A1D71002C0A91 /* NumberSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90CCE9295A1D71002C0A91 /* NumberSection.swift */; };
 		1D90CCED295A1FC4002C0A91 /* SingleSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90CCEC295A1FC4002C0A91 /* SingleSectionViewModel.swift */; };
+		1D90CCEF295A24DD002C0A91 /* ListGridColumnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90CCEE295A24DD002C0A91 /* ListGridColumnViewController.swift */; };
+		1D90CCF1295A2528002C0A91 /* ListGridColumnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90CCF0295A2528002C0A91 /* ListGridColumnViewModel.swift */; };
 		1DD061E22950D4060012F709 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD061E12950D4060012F709 /* AppDelegate.swift */; };
 		1DD061E42950D4060012F709 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD061E32950D4060012F709 /* SceneDelegate.swift */; };
 		1DD061E62950D4060012F709 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD061E52950D4060012F709 /* MenuViewController.swift */; };
@@ -51,6 +53,8 @@
 		1D90CCE5295A1824002C0A91 /* SingleSectionColumnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSectionColumnViewController.swift; sourceTree = "<group>"; };
 		1D90CCE9295A1D71002C0A91 /* NumberSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSection.swift; sourceTree = "<group>"; };
 		1D90CCEC295A1FC4002C0A91 /* SingleSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSectionViewModel.swift; sourceTree = "<group>"; };
+		1D90CCEE295A24DD002C0A91 /* ListGridColumnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGridColumnViewController.swift; sourceTree = "<group>"; };
+		1D90CCF0295A2528002C0A91 /* ListGridColumnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGridColumnViewModel.swift; sourceTree = "<group>"; };
 		1DD061DE2950D4060012F709 /* CompositionalLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompositionalLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DD061E12950D4060012F709 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DD061E32950D4060012F709 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				1D90CCEC295A1FC4002C0A91 /* SingleSectionViewModel.swift */,
+				1D90CCF0295A2528002C0A91 /* ListGridColumnViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 				1DD0621E2950E8D00012F709 /* SingleSectionListViewController.swift */,
 				1D90CCE3295A1573002C0A91 /* SingleSectionGridViewController.swift */,
 				1D90CCE5295A1824002C0A91 /* SingleSectionColumnViewController.swift */,
+				1D90CCEE295A24DD002C0A91 /* ListGridColumnViewController.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -349,7 +355,9 @@
 				1DD062252959DB5F0012F709 /* CollectionTypes.swift in Sources */,
 				1DD0621D2950E6420012F709 /* BaseViewController.swift in Sources */,
 				1DD0621F2950E8D00012F709 /* SingleSectionListViewController.swift in Sources */,
+				1D90CCF1295A2528002C0A91 /* ListGridColumnViewModel.swift in Sources */,
 				1D90CCEA295A1D71002C0A91 /* NumberSection.swift in Sources */,
+				1D90CCEF295A24DD002C0A91 /* ListGridColumnViewController.swift in Sources */,
 				1DD062212950EED50012F709 /* UIViewExtensions.swift in Sources */,
 				1DD061E42950D4060012F709 /* SceneDelegate.swift in Sources */,
 				1DD062232959D64D0012F709 /* NumberModel.swift in Sources */,
