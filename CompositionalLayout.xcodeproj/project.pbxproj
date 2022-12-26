@@ -156,7 +156,7 @@
 				1D90CCE7295A1D25002C0A91 /* CollectionViewLayout */,
 				1DD062262959E07A0012F709 /* Scenes */,
 				1DD0621B2950E61E0012F709 /* Helpers */,
-				1DD062162950DC2F0012F709 /* Cell */,
+				1DD062162950DC2F0012F709 /* CollectionCellsAndViews  */,
 				1DD061E12950D4060012F709 /* AppDelegate.swift */,
 				1DD061E32950D4060012F709 /* SceneDelegate.swift */,
 				1DD061EA2950D4070012F709 /* Assets.xcassets */,
@@ -183,12 +183,12 @@
 			path = CompositionalLayoutUITests;
 			sourceTree = "<group>";
 		};
-		1DD062162950DC2F0012F709 /* Cell */ = {
+		1DD062162950DC2F0012F709 /* CollectionCellsAndViews  */ = {
 			isa = PBXGroup;
 			children = (
 				1DD062172950DC4B0012F709 /* NumberCell.swift */,
 			);
-			path = Cell;
+			path = "CollectionCellsAndViews ";
 			sourceTree = "<group>";
 		};
 		1DD0621B2950E61E0012F709 /* Helpers */ = {

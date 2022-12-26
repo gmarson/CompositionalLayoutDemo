@@ -10,6 +10,27 @@ import UIKit
 
 struct LayoutProvider {
     
+    var headerFooterSize: NSCollectionLayoutSize {
+        NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+    }
+    
+    func buildFooterSection(kind: String) -> NSCollectionLayoutBoundarySupplementaryItem {
+        NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerFooterSize,
+            elementKind: "SectionHeaderElementKind" + kind, alignment: .bottom
+        )
+    }
+    
+    func buildHeaderSection(kind: String) -> NSCollectionLayoutBoundarySupplementaryItem {
+        NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerFooterSize,
+            elementKind: "SectionHeaderElementKind" + kind, alignment: .top
+        )
+    }
+    
     private var columnLayoutGroup: NSCollectionLayoutGroup {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -92,7 +113,7 @@ struct LayoutProvider {
         )
     }
     
-    func listGridColumnLayout() -> UICollectionViewCompositionalLayout {
+    func listGridColumnLayout(kind: String) -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
             layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
@@ -110,6 +131,18 @@ struct LayoutProvider {
 
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
+            
+//            let headerRegistration = UICollectionView.SupplementaryRegistration
+//            <TitleSupplementaryView>(elementKind: SectionHeadersFootersViewController.sectionHeaderElementKind) {
+//                (supplementaryView, string, indexPath) in
+//                supplementaryView.label.text = "\(string) for section \(indexPath.section)"
+//                supplementaryView.backgroundColor = .lightGray
+//                supplementaryView.layer.borderColor = UIColor.black.cgColor
+//                supplementaryView.layer.borderWidth = 1.0
+//            }
+            
+//            section.boundarySupplementaryItems = [buildHeaderSection(kind: kind)]
+            
             return section
         }
         

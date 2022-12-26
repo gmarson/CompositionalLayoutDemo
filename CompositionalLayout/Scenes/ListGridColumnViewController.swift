@@ -12,7 +12,7 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
     private var dataSource: NumberDataSource?
     private var currentSnapshot: NumberSnapshot = NumberSnapshot()
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listGridColumnLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listGridColumnLayout(kind: self.description))
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(NumberCell.self, forCellWithReuseIdentifier: NumberCell.identifier)
         return collectionView
