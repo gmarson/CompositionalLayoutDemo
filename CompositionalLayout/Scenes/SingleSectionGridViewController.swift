@@ -7,17 +7,7 @@
 
 import UIKit
 
-struct SingleSectionGridViewModel: BaseViewModel {
-    
-    var numberArray: [NumberModel]
-    
-    init(numberArray: [Int]) {
-        self.numberArray = numberArray.map { NumberModel(number: $0) }
-    }
-    
-}
-
-final class SingleSectionGridViewController: BaseViewController<SingleSectionGridViewModel> {
+final class SingleSectionGridViewController: BaseViewController<SingleSectionViewModel> {
 
     private var dataSource: NumberDataSource?
     private var currentSnapshot: NumberSnapshot = NumberSnapshot()
@@ -48,7 +38,7 @@ final class SingleSectionGridViewController: BaseViewController<SingleSectionGri
         dataSource = NumberDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NumberCell.identifier, for: indexPath) as? NumberCell,
-                  let item = self?.viewModel.numberArray[indexPath.row]
+                  let item = self?.viewModel.dataDictionary[.grid]?[indexPath.row]
             else {
                 return UICollectionViewCell()
             }
@@ -60,8 +50,9 @@ final class SingleSectionGridViewController: BaseViewController<SingleSectionGri
         
         collectionView.dataSource = dataSource
         
-        currentSnapshot.appendSections([0])
-        currentSnapshot.appendItems(viewModel.numberArray)
+        currentSnapshot.appendSections([.grid])
+        guard let numbers = viewModel.dataDictionary[.grid] else { return }
+        currentSnapshot.appendItems(numbers)
         dataSource?.apply(currentSnapshot, animatingDifferences: true)
         
     }

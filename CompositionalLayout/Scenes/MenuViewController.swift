@@ -71,21 +71,21 @@ extension MenuViewController {
     
     @objc
     private func singleSectionListPressed() {
-        let viewModel = SingleSectionListViewModel(numberArray: [1,2,3,4,5,6,7,8])
+        let viewModel = SingleSectionViewModel(.list, numberArray: [1,2,3,4,5,6,7,8])
         let viewController = SingleSectionListViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc
     private func singleSectionGridPressed() {
-        let viewModel = SingleSectionGridViewModel(numberArray: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 99999999, 99999, 9999])
+        let viewModel = SingleSectionViewModel(.grid, numberArray: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 99999999, 99999, 9999])
         let viewController = SingleSectionGridViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc
     private func singleSectionColumnPressed() {
-        let viewModel = SingleSectionColumnViewModel(numberArray: [1,2,3,4,5,6,7,8])
+        let viewModel = SingleSectionViewModel(.column, numberArray: [1,2,3,4,5,6,7,8])
         let viewController = SingleSectionColumnViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
