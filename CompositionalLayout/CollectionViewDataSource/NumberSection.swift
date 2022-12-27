@@ -13,4 +13,15 @@ enum NumberSection: Int, Hashable {
     case grid = 1
     case column = 2
     
+    
+    var stringDescription: String {
+        switch self {
+        case .list:
+            return "List"
+        case .grid:
+            return "Grid"
+        case .column:
+            return "Column"
+        }
+    }
 }

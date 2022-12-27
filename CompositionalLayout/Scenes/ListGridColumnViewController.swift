@@ -12,9 +12,10 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
     private var dataSource: NumberDataSource?
     private var currentSnapshot: NumberSnapshot = NumberSnapshot()
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listGridColumnLayout(kind: self.description))
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listGridColumnLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(NumberCell.self, forCellWithReuseIdentifier: NumberCell.identifier)
+        collectionView.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.identifier)
         return collectionView
     }()
     
@@ -49,6 +50,18 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
             return cell
         })
         
+        dataSource?.supplementaryViewProvider = { (view, kind, indexPath) in
+            
+            guard let sectionHeader = self.collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as? HeaderCollectionReusableView,
+                let numberSection = NumberSection(rawValue: indexPath.section)
+            else {
+                return UICollectionReusableView()
+            }
+            
+            sectionHeader.configure(numberSection.stringDescription)
+            return sectionHeader
+        }
+        
         collectionView.dataSource = dataSource
         
         currentSnapshot.appendSections([.list, .grid, .column])
@@ -61,6 +74,18 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
         
     }
 
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as? HeaderCollectionReusableView,
+            let numberSection = NumberSection(rawValue: indexPath.section)
+        else {
+            return UICollectionReusableView()
+        }
+        
+        sectionHeader.configure(numberSection.stringDescription)
+        return sectionHeader
+    }
+    
 }
 
 

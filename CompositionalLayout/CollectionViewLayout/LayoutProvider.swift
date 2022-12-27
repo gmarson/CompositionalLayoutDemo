@@ -17,17 +17,17 @@ struct LayoutProvider {
         )
     }
     
-    func buildFooterSection(kind: String) -> NSCollectionLayoutBoundarySupplementaryItem {
+    func buildFooterSection() -> NSCollectionLayoutBoundarySupplementaryItem {
         NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
-            elementKind: "SectionHeaderElementKind" + kind, alignment: .bottom
+            elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom
         )
     }
     
-    func buildHeaderSection(kind: String) -> NSCollectionLayoutBoundarySupplementaryItem {
+    func buildHeaderSection() -> NSCollectionLayoutBoundarySupplementaryItem {
         NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
-            elementKind: "SectionHeaderElementKind" + kind, alignment: .top
+            elementKind: UICollectionView.elementKindSectionHeader, alignment: .top
         )
     }
     
@@ -113,35 +113,29 @@ struct LayoutProvider {
         )
     }
     
-    func listGridColumnLayout(kind: String) -> UICollectionViewCompositionalLayout {
+    func listGridColumnLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
             layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
             guard let sectionLayoutKind = NumberSection(rawValue: sectionIndex) else { return nil }
             
-            let group: NSCollectionLayoutGroup
+            let config = UICollectionViewCompositionalLayoutConfiguration()
+            config.interSectionSpacing = 16
+            
+            let section: NSCollectionLayoutSection
             switch sectionLayoutKind {
             case .list:
-                group = listLayoutGroup
+                section = NSCollectionLayoutSection(group: listLayoutGroup)
             case .grid:
-                group = gridLayoutGroup
+                section = NSCollectionLayoutSection(group: gridLayoutGroup)
+                section.orthogonalScrollingBehavior = .continuous
             case .column:
-                group = columnLayoutGroup
+                section = NSCollectionLayoutSection(group: columnLayoutGroup)
             }
-
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
             
-//            let headerRegistration = UICollectionView.SupplementaryRegistration
-//            <TitleSupplementaryView>(elementKind: SectionHeadersFootersViewController.sectionHeaderElementKind) {
-//                (supplementaryView, string, indexPath) in
-//                supplementaryView.label.text = "\(string) for section \(indexPath.section)"
-//                supplementaryView.backgroundColor = .lightGray
-//                supplementaryView.layer.borderColor = UIColor.black.cgColor
-//                supplementaryView.layer.borderWidth = 1.0
-//            }
+            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             
-//            section.boundarySupplementaryItems = [buildHeaderSection(kind: kind)]
+            section.boundarySupplementaryItems = [buildHeaderSection()]
             
             return section
         }
