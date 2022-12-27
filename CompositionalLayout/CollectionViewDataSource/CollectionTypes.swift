@@ -9,5 +9,4 @@ import Foundation
 import UIKit
 
 typealias NumberDataSource = UICollectionViewDiffableDataSource<NumberSection, NumberModel>
-typealias NumberSupplementaryProvider = NumberDataSource.SupplementaryViewProvider
 typealias NumberSnapshot = NSDiffableDataSourceSnapshot<NumberSection, NumberModel>

@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class ListGridColumnViewController: BaseViewController<ListGridColumnViewModel> {
 
+    private var bag: Set<AnyCancellable> = .init()
     private var dataSource: NumberDataSource?
-    private var currentSnapshot: NumberSnapshot = NumberSnapshot()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutProvider().listGridColumnLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,20 +20,128 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
         return collectionView
     }()
     
+    private lazy var plusOneEvenButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("+1k all even", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(plusOneEven), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var minusOneEvenButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("-1k all even", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(minusOneEven), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var plusOneOddButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("+1k all odd", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(plusOneOdd), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var minusOneOddButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("-1k all odd", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(minusOneOdd), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var oddStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    private lazy var evenStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    private lazy var emptyBottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var operationsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.backgroundColor = .lightGray
+        return stackView
+    }()
+    
     private let layoutProvider = LayoutProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        collectionView.reloadData()
+        setupObservers()
     }
         
     override func setupViews() {
         view.addSubview(collectionView)
+        view.addSubview(operationsStackView)
+        view.addSubview(emptyBottomView)
+        operationsStackView.addArrangedSubview(evenStackView)
+        operationsStackView.addArrangedSubview(oddStackView)
+        evenStackView.addArrangedSubview(plusOneEvenButton)
+        evenStackView.addArrangedSubview(minusOneEvenButton)
+        oddStackView.addArrangedSubview(plusOneOddButton)
+        oddStackView.addArrangedSubview(minusOneOddButton)
     }
     
     override func setupConstraints() {
-        collectionView.pinToSuperView()
+        view.addConstraints([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: operationsStackView.topAnchor, constant: 8)
+        ])
+        
+        view.addConstraints([
+            operationsStackView.bottomAnchor.constraint(equalTo: emptyBottomView.topAnchor),
+            operationsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            operationsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            operationsStackView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        view.addConstraints([
+            emptyBottomView.heightAnchor.constraint(equalToConstant: 20),
+            emptyBottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            emptyBottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyBottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            
+        ])
+    }
+    
+    private func setupObservers() {
+        viewModel.$collectionSnapshot.sink { [weak self] in
+            self?.dataSource?.apply($0, animatingDifferences: true)
+        }.store(in: &bag)
     }
     
     private func setupCollectionView() {
@@ -63,49 +172,18 @@ final class ListGridColumnViewController: BaseViewController<ListGridColumnViewM
         }
         
         collectionView.dataSource = dataSource
-        
-        currentSnapshot.appendSections([.list, .grid, .column])
-        
-        for (key, value) in viewModel.dataDictionary {
-            currentSnapshot.appendItems(value, toSection: key)
-        }
-        
-        dataSource?.apply(currentSnapshot, animatingDifferences: true)
-        
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as? HeaderCollectionReusableView,
-            let numberSection = NumberSection(rawValue: indexPath.section)
-        else {
-            return UICollectionReusableView()
-        }
-        
-        sectionHeader.configure(numberSection.stringDescription)
-        return sectionHeader
     }
     
 }
 
 
-// MARK: - Changing Values
+// MARK: - Actions
 
 extension ListGridColumnViewController {
     
-//    private func recipeDidChange(_ notification: Notification) {
-//        guard
-//            // Get `recipeId` from from the `userInfo` dictionary.
-//            let userInfo = notification.userInfo,
-//            let recipeId = userInfo[NotificationKeys.recipeId] as? Recipe.ID,
-//            // Confirm that the data source contains the recipe.
-//            recipeListDataSource.indexPath(for: recipeId) != nil
-//        else { return }
-//
-//        // Get the diffable data source's current snapshot.
-//        var snapshot = recipeListDataSource.snapshot()
-//        // Update the recipe's data displayed in the collection view.
-//        snapshot.reconfigureItems([recipeId])
-//        recipeListDataSource.apply(snapshot, animatingDifferences: true)
-//    }
+    @objc private func plusOneEven() { viewModel.plusOneEven() }
+    @objc private func plusOneOdd() { viewModel.plusOneOdd() }
+    @objc private func minusOneEven() { viewModel.minusOneEven() }
+    @objc private func minusOneOdd() { viewModel.minusOneOdd() }
+    
 }
